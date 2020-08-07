@@ -1,19 +1,28 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using app_persistence;
+using System.Threading.Tasks;
 
 namespace app_backend
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var webHost = CreateHostBuilder(args).Build();
+
+            using (var scope = webHost.Services.CreateScope())
+            {
+                //Open context for first time 
+                var dbContext = scope.ServiceProvider.GetRequiredService<Func<Db>>()();
+                //Ensure all migrations are run on target database before starting API 
+                await dbContext.Database.MigrateAsync();
+
+                await webHost.RunAsync();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
