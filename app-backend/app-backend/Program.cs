@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using app_persistence;
 using System.Threading.Tasks;
-
+    
 namespace app_backend
 {
     public class Program
@@ -14,15 +14,13 @@ namespace app_backend
         {
             var webHost = CreateHostBuilder(args).Build();
 
-            using (var scope = webHost.Services.CreateScope())
-            {
-                //Open context for first time 
-                var dbContext = scope.ServiceProvider.GetRequiredService<Func<Db>>()();
-                //Ensure all migrations are run on target database before starting API 
-                await dbContext.Database.MigrateAsync();
+            using var scope = webHost.Services.CreateScope();
+            //Open context for first time 
+            var dbContext = scope.ServiceProvider.GetRequiredService<Func<Db>>()();
+            //Ensure all migrations are run on target database before starting API 
+            await dbContext.Database.MigrateAsync();
 
-                await webHost.RunAsync();
-            }
+            await webHost.RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
