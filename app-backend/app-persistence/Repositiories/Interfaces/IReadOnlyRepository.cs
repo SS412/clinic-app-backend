@@ -22,17 +22,6 @@ namespace AppPersistence.Repositiories.Interfaces
         /// <returns></returns>
         Task<TEntity> GetById(TPrimaryKey id);
         /// <summary>
-        /// Returns the entity with the given primary key ans transforms it using the selector, returns null if not found
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <param name="id"></param>
-        /// <param name="selector"></param>
-        /// <returns></returns>
-        Task<TResult> GetById<TResult>(
-            TPrimaryKey id,
-            Expression<Func<TEntity, TResult>> selector
-        );
-        /// <summary>
         /// Returns all entities that meet the specified filter and transforms them using the specified selector.
         /// Default behavior returns them in ascendng ordr by primary key.
         /// </summary>

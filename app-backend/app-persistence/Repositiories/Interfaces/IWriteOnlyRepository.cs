@@ -9,7 +9,7 @@ namespace AppPersistence.Repositiories.Interfaces
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="TPrimaryKey"></typeparam>
-    public interface WriteOnlyRepository<TEntity, TPrimaryKey> where TEntity : class
+    public interface IWriteOnlyRepository<TEntity, TPrimaryKey> where TEntity : class
     {
         /// <summary>
         /// Inserts or updates the specified entity depending on wether it has a primary key or not
